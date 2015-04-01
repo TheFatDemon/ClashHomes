@@ -1,0 +1,17 @@
+name: ClashHomes
+author: TheFatDemon
+version: 1.0
+main: me.thefatdemon.plugins.clashhomes.ClashHomes
+commands:
+  home:
+    description: Teleports you to your home if you have one
+    permission: ch.basic.home
+  sethome:
+    description: Sets your home to your current location
+    permission: ch.basic.sethome
+  spawn:
+    description: Teleports you to the world spawn point as defined by the Administrator
+    permission: ch.basic.spawn
+  setspawn:
+    description: Sets the world spawn at your current location
+    permission: ch.admin.setspawn
