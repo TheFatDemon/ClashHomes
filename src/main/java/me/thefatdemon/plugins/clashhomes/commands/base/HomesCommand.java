@@ -5,11 +5,14 @@ import me.thefatdemon.plugins.clashhomes.commands.BaseCommand;
 import me.thefatdemon.plugins.clashhomes.commands.CommandResult;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SetSpawncommand extends BaseCommand {
-    public SetSpawncommand(ClashHomes clashHomes, String s) {
+import java.util.List;
+
+public class HomesCommand extends BaseCommand {
+    public HomesCommand(ClashHomes clashHomes, String s) {
         super(clashHomes, s);
     }
 
@@ -18,21 +21,25 @@ public class SetSpawncommand extends BaseCommand {
         if (!(commandSender instanceof Player)){
             return CommandResult.PLAYER_ONLY;
         }
+
         Player player = (Player) commandSender;
+
         if (!player.hasPermission(permission)){
             return CommandResult.NO_PERMISSIONS;
         }
-        if (plugin.getLocationManager().getSpawn(player.getWorld()) != null){
-            if (!plugin.getLocationManager().updateSpawn(player.getLocation(), player.getWorld())){
-                return CommandResult.ERROR;
-            }
-            player.sendMessage(ChatColor.GOLD + "[ClashHomes] Spawn for " + player.getWorld().getName() + " set");
+
+        List<String> homes = plugin.getLocationManager().getHomesList(player);
+        if (homes.size() == 0 || homes.isEmpty()){
+            player.sendMessage(ChatColor.GOLD + "[ClashHomes] No Homes in Database");
             return CommandResult.SUCCESS;
         }
-        if (!plugin.getLocationManager().setSpawn(player.getLocation(), player.getWorld())){
-            return CommandResult.ERROR;
+
+        player.sendMessage(ChatColor.GOLD + "[ClashHomes] List Of Homes");
+
+        for (String home : homes){
+            player.sendMessage(ChatColor.GOLD + "[ClashHomes] - " + home);
         }
-        player.sendMessage(ChatColor.GOLD + "[ClashHomes] Spawn for " + player.getWorld().getName() + " set");
+
         return CommandResult.SUCCESS;
     }
 }

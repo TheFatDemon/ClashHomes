@@ -6,6 +6,9 @@ commands:
   home:
     description: Teleports you to your home if you have one
     permission: ch.basic.home
+  homes:
+    description: Lists Homes for Player
+    permission: ch.basic.list
   sethome:
     description: Sets your home to your current location
     permission: ch.basic.sethome

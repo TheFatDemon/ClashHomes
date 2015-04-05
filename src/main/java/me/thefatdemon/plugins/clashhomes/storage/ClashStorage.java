@@ -4,29 +4,33 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 public interface ClashStorage {
 
-    public Location getHome(Player player);
+    Location getHome(Player player);
 
     // Grab Home of a Player with name
-    public Location getHome(Player player, String homeName);
+    Location getHome(Player player, String homeName);
 
     // Set Home of a Player
-    public boolean setHome(Player player, String homeName, Location location);
+    boolean setHome(Player player, String homeName, Location location);
 
-    public boolean setHome(Player player, String homeName);
+    boolean setHome(Player player, String homeName);
 
-    public boolean setHome(Player player);
+    boolean setHome(Player player);
 
-    public boolean updateHome(Player player);
+    boolean updateHome(Player player);
 
-    public boolean updateHome(Player player, String homeName);
+    boolean updateHome(Player player, String homeName);
 
-    public boolean updateHome(Player player, String homeName, Location location);
+    boolean updateHome(Player player, String homeName, Location location);
 
-    public boolean setSpawn(Location location, World world);
+    boolean setSpawn(Location location, World world);
 
-    public boolean updateSpawn(Location location, World world);
+    boolean updateSpawn(Location location, World world);
 
-    public Location getSpawn(World world);
+    Location getSpawn(World world);
+
+    List<String> getHomesList(Player player);
 }

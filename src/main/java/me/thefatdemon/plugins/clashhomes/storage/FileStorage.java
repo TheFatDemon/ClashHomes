@@ -6,6 +6,8 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 public class FileStorage implements ClashStorage {
     private final ClashHomes plugin;
 
@@ -107,6 +109,11 @@ public class FileStorage implements ClashStorage {
             (float)config.getDouble(config.getString("spawns." + world.getName() + ".yaw")),
             (float)config.getDouble(config.getString("spawns." + world.getName() + ".pitch")));
 
+    }
+
+    @Override
+    public List<String> getHomesList(Player player) {
+        return plugin.getConfig().getStringList("homes." + player.getUniqueId().toString() + "");
     }
 }
 

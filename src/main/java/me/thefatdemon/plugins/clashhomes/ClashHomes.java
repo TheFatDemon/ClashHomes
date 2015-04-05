@@ -1,10 +1,7 @@
 package me.thefatdemon.plugins.clashhomes;
 
 import com.iciql.Db;
-import me.thefatdemon.plugins.clashhomes.commands.base.HomeCommand;
-import me.thefatdemon.plugins.clashhomes.commands.base.SetHomeCommand;
-import me.thefatdemon.plugins.clashhomes.commands.base.SetSpawncommand;
-import me.thefatdemon.plugins.clashhomes.commands.base.SpawnCommand;
+import me.thefatdemon.plugins.clashhomes.commands.base.*;
 import me.thefatdemon.plugins.clashhomes.listeners.DisabledListener;
 import me.thefatdemon.plugins.clashhomes.storage.ClashStorage;
 import me.thefatdemon.plugins.clashhomes.storage.FileStorage;
@@ -41,6 +38,7 @@ public class ClashHomes extends JavaPlugin {
         }
 
         getCommand("home").setExecutor(new HomeCommand(this, Permissions.BASIC_HOME.toString()));
+        getCommand("homes").setExecutor(new HomesCommand(this, Permissions.BASIC_HOMES_LIST.toString()));
         getCommand("sethome").setExecutor(new SetHomeCommand(this, Permissions.BASIC_SET_HOME.toString()));
         getCommand("setspawn").setExecutor(new SetSpawncommand(this, Permissions.ADMIN_SET_SPAWN.toString()));
         getCommand("spawn").setExecutor(new SpawnCommand(this, Permissions.BASIC_SPAWN.toString()));
@@ -71,13 +69,14 @@ public class ClashHomes extends JavaPlugin {
 
     public enum Permissions{
         BASIC_HOME("ch.basic.home"),
+        BASIC_HOMES_LIST("ch.basic.list"),
         BASIC_SET_HOME("ch.basic.sethome"),
         BASIC_SPAWN ("ch.basic.spawn"),
         ADMIN_SET_SPAWN ("ch.admin.setspawn"),
         VIP_MULTI ("ch.multi");
 
         private final String stringValue;
-        private Permissions(final String s) { stringValue = s; }
+        Permissions(final String s) { stringValue = s; }
         @Override
         public String toString(){ return stringValue; }
     }

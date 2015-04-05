@@ -8,6 +8,9 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MySQLStorage implements ClashStorage {
     private final ClashHomes plugin;
 
@@ -153,6 +156,23 @@ public class MySQLStorage implements ClashStorage {
             );
         }catch (Exception e){
             return null;
+        }finally {
+            db.close();
+        }
+    }
+
+    @Override
+    public List<String> getHomesList(Player player) {
+        Db db = plugin.openDatabase();
+        try {
+            HomesModel model = new HomesModel();
+            return db.
+                    from(model).
+                    where(model.playerUUID).
+                    is(player.getUniqueId().toString()).
+                    select(model.homeName);
+        }catch (Exception e){
+            return new ArrayList<>(0);
         }finally {
             db.close();
         }
