@@ -46,7 +46,9 @@ public class ClashHomes extends JavaPlugin {
 
     @Override
     public void onDisable(){
-
+        // Literally No reason for this to be here...
+        Logger log = this.getLogger();
+        log.info("Disabling ClashHomes");
     }
 
     public ClashStorage getLocationManager(){
