@@ -21,4 +21,6 @@ Todo List
 
 * ~~Multi-Homes~~ (done)
 
+* List Homes
+
 * Limit Homes
