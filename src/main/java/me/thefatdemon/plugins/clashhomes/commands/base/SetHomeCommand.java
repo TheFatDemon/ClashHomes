@@ -40,12 +40,12 @@ public class SetHomeCommand extends BaseCommand {
             String homeName = args[0];
             Location homeLocation = plugin.getLocationManager().getHome(player, homeName);
             if (homeLocation == null){
-                player.sendMessage(ChatColor.DARK_RED + "[ChatHomes] " + homeName + " Set");
+                player.sendMessage(ChatColor.DARK_RED + "[ClashHomes] " + homeName + " Set");
                 plugin.getLocationManager().setHome(player, homeName);
                 return CommandResult.SUCCESS;
             }
             plugin.getLocationManager().updateHome(player, homeName);
-            player.sendMessage(ChatColor.GOLD + "[ChatHomes] " + homeName + " Updated");
+            player.sendMessage(ChatColor.GOLD + "[ClashHomes] " + homeName + " Updated");
             return CommandResult.SUCCESS;
         }
         return CommandResult.SILENT_ERROR;

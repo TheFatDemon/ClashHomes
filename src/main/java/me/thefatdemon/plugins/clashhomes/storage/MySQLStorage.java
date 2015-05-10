@@ -107,6 +107,31 @@ public class MySQLStorage implements ClashStorage {
     }
 
     @Override
+    public boolean deleteHome(Player player) {
+        return deleteHome(player, "default");
+    }
+
+    @Override
+    public boolean deleteHome(Player player, String homeName) {
+        Db db = plugin.openDatabase();
+        try{
+            ThreadLocal<HomesModel> threadLocal = Utils.newThreadLocal(HomesModel.class);
+            db.from(threadLocal.get())
+                    .where(threadLocal.get().playerUUID)
+                    .is(player.getUniqueId().toString())
+                    .and(threadLocal.get().homeName)
+                    .is(homeName)
+                    .delete();
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }finally {
+            db.close();
+        }
+    }
+
+    @Override
     public boolean setSpawn(Location location, World world) {
         Db db = plugin.openDatabase();
         try {

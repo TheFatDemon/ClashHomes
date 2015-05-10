@@ -37,6 +37,7 @@ public class ClashHomes extends JavaPlugin {
             return;
         }
 
+        getCommand("delhome").setExecutor(new DelHomeCommand(this, Permissions.BASIC_DEL_HOME.toString()));
         getCommand("home").setExecutor(new HomeCommand(this, Permissions.BASIC_HOME.toString()));
         getCommand("homes").setExecutor(new HomesCommand(this, Permissions.BASIC_HOMES_LIST.toString()));
         getCommand("sethome").setExecutor(new SetHomeCommand(this, Permissions.BASIC_SET_HOME.toString()));
@@ -46,9 +47,11 @@ public class ClashHomes extends JavaPlugin {
 
     @Override
     public void onDisable(){
-        // Literally No reason for this to be here...
         Logger log = this.getLogger();
         log.info("Disabling ClashHomes");
+        log.info("Saving Config");
+        saveConfig();
+        log.info("Saved.");
     }
 
     public ClashStorage getLocationManager(){
@@ -70,6 +73,7 @@ public class ClashHomes extends JavaPlugin {
     }
 
     public enum Permissions{
+        BASIC_DEL_HOME("ch.basic.delhome"),
         BASIC_HOME("ch.basic.home"),
         BASIC_HOMES_LIST("ch.basic.list"),
         BASIC_SET_HOME("ch.basic.sethome"),

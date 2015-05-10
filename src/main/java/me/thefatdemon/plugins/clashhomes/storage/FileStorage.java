@@ -10,9 +10,11 @@ import java.util.List;
 
 public class FileStorage implements ClashStorage {
     private final ClashHomes plugin;
+    private FileConfiguration config;
 
     public FileStorage(ClashHomes clashHomes) {
         this.plugin = clashHomes;
+        this.config = plugin.getConfig();
     }
 
     @Override
@@ -22,7 +24,6 @@ public class FileStorage implements ClashStorage {
 
     @Override
     public Location getHome(Player player, String homeName) {
-        FileConfiguration config = plugin.getConfig();
         if (!config.isSet("homes." + player.getUniqueId().toString() + "." + homeName)){
             return null;
         }
@@ -36,7 +37,6 @@ public class FileStorage implements ClashStorage {
 
     @Override
     public boolean setHome(Player player, String homeName, Location location) {
-        FileConfiguration config = plugin.getConfig();
         try {
             config.set(("homes." + player.getUniqueId().toString() + "." + homeName + ".world"), location.getWorld().getName());
             config.set(("homes." + player.getUniqueId().toString() + "." + homeName + ".x"), location.getX());
@@ -76,8 +76,23 @@ public class FileStorage implements ClashStorage {
     }
 
     @Override
+    public boolean deleteHome(Player player) {
+        return this.deleteHome(player, "default");
+    }
+
+    @Override
+    public boolean deleteHome(Player player, String homeName) {
+        try {
+            config.getList("homes." + player.getUniqueId().toString()).remove(homeName);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
     public boolean setSpawn(Location location, World world) {
-        FileConfiguration config = plugin.getConfig();
         try {
             config.set(config.getString("spawns." + world.getName() + ".world"), location.getWorld().getName());
             config.set("spawns." + world.getName() + ".x", location.getX());
@@ -98,7 +113,6 @@ public class FileStorage implements ClashStorage {
 
     @Override
     public Location getSpawn(World world) {
-        FileConfiguration config = plugin.getConfig();
         if (!config.isSet("spawns." + world.getName())){
             return null;
         }
@@ -113,7 +127,7 @@ public class FileStorage implements ClashStorage {
 
     @Override
     public List<String> getHomesList(Player player) {
-        return plugin.getConfig().getStringList("homes." + player.getUniqueId().toString() + "");
+        return config.getStringList("homes." + player.getUniqueId().toString() + "");
     }
 }
 
