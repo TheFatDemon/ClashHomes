@@ -79,6 +79,7 @@ public class ClashHomes extends JavaPlugin {
 
         private final String stringValue;
         Permissions(final String s) { stringValue = s; }
+
         @Override
         public String toString(){ return stringValue; }
     }

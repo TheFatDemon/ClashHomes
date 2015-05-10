@@ -12,7 +12,7 @@ public class HomesModel {
     @IQColumn(name = "player_uuid", length = 36)
     public String playerUUID;
 
-    @IQColumn(name = "home_name", length = 20)
+    @IQColumn(name = "home_name", length = 40)
     public String homeName;
 
     @IQColumn(name = "home_world", length = 20)
