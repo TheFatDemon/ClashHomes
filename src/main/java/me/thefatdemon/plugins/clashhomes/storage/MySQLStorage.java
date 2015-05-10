@@ -1,6 +1,7 @@
 package me.thefatdemon.plugins.clashhomes.storage;
 
 import com.iciql.Db;
+import com.iciql.util.Utils;
 import me.thefatdemon.plugins.clashhomes.ClashHomes;
 import me.thefatdemon.plugins.clashhomes.models.HomesModel;
 import me.thefatdemon.plugins.clashhomes.models.SpawnsModel;
@@ -8,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import javax.rmi.CORBA.Util;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,11 +29,11 @@ public class MySQLStorage implements ClashStorage {
     public Location getHome(Player player, String homeName) {
         Db db = plugin.openDatabase();
         try {
-            HomesModel model = new HomesModel();
-            HomesModel home = db.from(model)
-                    .where(model.playerUUID)
+            ThreadLocal<HomesModel> tableSafe = Utils.newThreadLocal(HomesModel.class);
+            HomesModel home = db.from(tableSafe.get())
+                    .where(tableSafe.get().playerUUID)
                     .is(player.getUniqueId().toString())
-                    .and(model.homeName)
+                    .and(tableSafe.get().homeName)
                     .is(homeName).selectFirst();
             return new Location(plugin.getServer().getWorld(home.homeWorld), home.homeX, home.homeY, home.homeZ, home.homeYaw, home.homePitch);
         }catch (Exception ignored){
@@ -79,7 +81,8 @@ public class MySQLStorage implements ClashStorage {
     public boolean updateHome(Player player, String homeName, Location location) {
         Db db = plugin.openDatabase();
         try {
-            HomesModel model = new HomesModel();
+            ThreadLocal<HomesModel> threadLocal = Utils.newThreadLocal(HomesModel.class);
+            HomesModel model = threadLocal.get();
             db
                 .from(model)
                 .set(model.homeName).to(homeName)
@@ -122,15 +125,15 @@ public class MySQLStorage implements ClashStorage {
     public boolean updateSpawn(Location location, World world) {
         Db db = plugin.openDatabase();
         try {
-            SpawnsModel spawnsModel = new SpawnsModel();
+            ThreadLocal<SpawnsModel> threadLocal = Utils.newThreadLocal(SpawnsModel.class);
             db
-                .from(spawnsModel)
-                .set(spawnsModel.spawnX).to(location.getX())
-                .set(spawnsModel.spawnY).to(location.getY())
-                .set(spawnsModel.spawnZ).to(location.getZ())
-                .set(spawnsModel.spawnPitch).to(location.getPitch())
-                .set(spawnsModel.spawnYaw).to(location.getYaw())
-                .where(spawnsModel.worldName)
+                .from(threadLocal.get())
+                .set(threadLocal.get().spawnX).to(location.getX())
+                .set(threadLocal.get().spawnY).to(location.getY())
+                .set(threadLocal.get().spawnZ).to(location.getZ())
+                .set(threadLocal.get().spawnPitch).to(location.getPitch())
+                .set(threadLocal.get().spawnYaw).to(location.getYaw())
+                .where(threadLocal.get().worldName)
                 .is(world.getName())
                 .update();
             return true;
@@ -144,8 +147,8 @@ public class MySQLStorage implements ClashStorage {
     public Location getSpawn(World world) {
         Db db = plugin.openDatabase();
         try {
-            SpawnsModel spawnsModel = new SpawnsModel();
-            SpawnsModel spawn = db.from(spawnsModel).where(spawnsModel.worldName).is(world.getName()).selectFirst();
+            ThreadLocal<SpawnsModel> threadLocal = Utils.newThreadLocal(SpawnsModel.class);
+            SpawnsModel spawn = db.from(threadLocal.get()).where(threadLocal.get().worldName).is(world.getName()).selectFirst();
             return new Location(
                 plugin.getServer().getWorld(spawn.worldName),
                 spawn.spawnX,
@@ -165,12 +168,12 @@ public class MySQLStorage implements ClashStorage {
     public List<String> getHomesList(Player player) {
         Db db = plugin.openDatabase();
         try {
-            HomesModel model = new HomesModel();
+            ThreadLocal<HomesModel> threadLocal = Utils.newThreadLocal(HomesModel.class);
             return db.
-                    from(model).
-                    where(model.playerUUID).
+                    from(threadLocal.get()).
+                    where(threadLocal.get().playerUUID).
                     is(player.getUniqueId().toString()).
-                    select(model.homeName);
+                    select(threadLocal.get().homeName);
         }catch (Exception e){
             return new ArrayList<>(0);
         }finally {
