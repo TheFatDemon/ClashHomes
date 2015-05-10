@@ -3,6 +3,9 @@ author: TheFatDemon
 version: 1.0
 main: me.thefatdemon.plugins.clashhomes.ClashHomes
 commands:
+  delhome:
+    description: Deletes a Players Home
+    permission: ch.basic.delhome
   home:
     description: Teleports you to your home if you have one
     permission: ch.basic.home
