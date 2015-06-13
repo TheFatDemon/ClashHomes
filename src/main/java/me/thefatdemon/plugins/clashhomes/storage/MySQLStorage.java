@@ -27,8 +27,7 @@ public class MySQLStorage implements ClashStorage {
 
     @Override
     public Location getHome(Player player, String homeName) {
-        Db db = plugin.openDatabase();
-        try {
+        try (Db db = plugin.openDatabase()) {
             ThreadLocal<HomesModel> tableSafe = Utils.newThreadLocal(HomesModel.class);
             HomesModel home = db.from(tableSafe.get())
                     .where(tableSafe.get().playerUUID)
@@ -36,9 +35,7 @@ public class MySQLStorage implements ClashStorage {
                     .and(tableSafe.get().homeName)
                     .is(homeName).selectFirst();
             return new Location(plugin.getServer().getWorld(home.homeWorld), home.homeX, home.homeY, home.homeZ, home.homeYaw, home.homePitch);
-        }catch (Exception ignored){
-        }finally {
-            db.close();
+        } catch (Exception ignored) {
         }
         return null;
     }
@@ -79,30 +76,27 @@ public class MySQLStorage implements ClashStorage {
 
     @Override
     public boolean updateHome(Player player, String homeName, Location location) {
-        Db db = plugin.openDatabase();
-        try {
+        try (Db db = plugin.openDatabase()) {
             ThreadLocal<HomesModel> threadLocal = Utils.newThreadLocal(HomesModel.class);
             HomesModel model = threadLocal.get();
             db
-                .from(model)
-                .set(model.homeName).to(homeName)
-                .set(model.homeX).to(location.getX())
-                .set(model.homeY).to(location.getY())
-                .set(model.homeZ).to(location.getZ())
-                .set(model.homePitch).to(location.getPitch())
-                .set(model.homeYaw).to(location.getYaw())
-                .set(model.homeWorld).to(location.getWorld().getName())
-                .where(model.homeName)
-                .is(homeName)
-                .and(model.playerUUID)
-                .is(player.getUniqueId()
-                .toString()).update();
+                    .from(model)
+                    .set(model.homeName).to(homeName)
+                    .set(model.homeX).to(location.getX())
+                    .set(model.homeY).to(location.getY())
+                    .set(model.homeZ).to(location.getZ())
+                    .set(model.homePitch).to(location.getPitch())
+                    .set(model.homeYaw).to(location.getYaw())
+                    .set(model.homeWorld).to(location.getWorld().getName())
+                    .where(model.homeName)
+                    .is(homeName)
+                    .and(model.playerUUID)
+                    .is(player.getUniqueId()
+                            .toString()).update();
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }finally {
-            db.close();
         }
     }
 
@@ -113,8 +107,7 @@ public class MySQLStorage implements ClashStorage {
 
     @Override
     public boolean deleteHome(Player player, String homeName) {
-        Db db = plugin.openDatabase();
-        try{
+        try (Db db = plugin.openDatabase()) {
             ThreadLocal<HomesModel> threadLocal = Utils.newThreadLocal(HomesModel.class);
             db.from(threadLocal.get())
                     .where(threadLocal.get().playerUUID)
@@ -123,26 +116,21 @@ public class MySQLStorage implements ClashStorage {
                     .is(homeName)
                     .delete();
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }finally {
-            db.close();
         }
     }
 
     @Override
     public boolean setSpawn(Location location, World world) {
-        Db db = plugin.openDatabase();
-        try {
+        try (Db db = plugin.openDatabase()) {
             SpawnsModel spawnsModel = new SpawnsModel(world, location);
             db.insert(spawnsModel);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }finally {
-            db.close();
         }
     }
 
@@ -170,39 +158,33 @@ public class MySQLStorage implements ClashStorage {
 
     @Override
     public Location getSpawn(World world) {
-        Db db = plugin.openDatabase();
-        try {
+        try (Db db = plugin.openDatabase()) {
             ThreadLocal<SpawnsModel> threadLocal = Utils.newThreadLocal(SpawnsModel.class);
             SpawnsModel spawn = db.from(threadLocal.get()).where(threadLocal.get().worldName).is(world.getName()).selectFirst();
             return new Location(
-                plugin.getServer().getWorld(spawn.worldName),
-                spawn.spawnX,
-                spawn.spawnY,
-                spawn.spawnZ,
-                spawn.spawnYaw,
-                spawn.spawnPitch
+                    plugin.getServer().getWorld(spawn.worldName),
+                    spawn.spawnX,
+                    spawn.spawnY,
+                    spawn.spawnZ,
+                    spawn.spawnYaw,
+                    spawn.spawnPitch
             );
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
-        }finally {
-            db.close();
         }
     }
 
     @Override
     public List<String> getHomesList(Player player) {
-        Db db = plugin.openDatabase();
-        try {
+        try (Db db = plugin.openDatabase()) {
             ThreadLocal<HomesModel> threadLocal = Utils.newThreadLocal(HomesModel.class);
             return db.
                     from(threadLocal.get()).
                     where(threadLocal.get().playerUUID).
                     is(player.getUniqueId().toString()).
                     select(threadLocal.get().homeName);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ArrayList<>(0);
-        }finally {
-            db.close();
         }
     }
 }
