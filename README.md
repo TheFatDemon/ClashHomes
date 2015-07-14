@@ -37,9 +37,9 @@ Commands
 
 `/spawn` - Teleport to spawn for Current World
 
-`/sethome [homename]` - Set Home for Current Player [Home Name is for those with `ch.multi`]
+`/sethome [homename]` - Set Home for Current Player [Home Name is for those with `ch.multi`
 
-`/delhome [homename]` - Delete Own User's Home or `homename` [Home Name is for those with `ch.multi`]
+`/delhome [homename]` - Delete Own User's Home or `homename` [Home Name is for those with `ch.multi`
 
 `/home [homename]` - Teleport to default home or to given home name
 
@@ -47,4 +47,4 @@ Commands
 
 Warning
 =======
-If you use this plugin, be warned that the File Backend is UNTESTED and may not work. Use the MySQL Backend for best comparability.
+If you use this plugin, be warned that the File Backend is UNTESTED and may not work. Use the MySQL Backend for best compatability.
