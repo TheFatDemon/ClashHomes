@@ -17,12 +17,6 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>com.iciql</id>
-            <name>Iciql</name>
-            <url>http://gitblit.github.io/iciql/maven/</url>
-            <layout>default</layout>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -30,12 +24,12 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.9-R0.1-SNAPSHOT</version>
+            <version>1.10.2-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.iciql</groupId>
+            <groupId>com.gitblit.iciql</groupId>
             <artifactId>iciql</artifactId>
-            <version>1.5.0</version>
+            <version>2.1.1</version>
         </dependency>
     </dependencies>
 
